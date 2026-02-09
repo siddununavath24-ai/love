@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For My Love ❤️</title>
+
+<style>
+
+/* ===== GENERAL ===== */
+
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:linear-gradient(to right,#ff758c,#ff7eb3);
+  overflow-x:hidden;
+  overflow-y:auto;
+  color:white;
+}
+
+/* ===== SECTIONS ===== */
+
+.section{
+  min-height:100vh;
+  text-align:center;
+  padding:40px 20px;
+  display:none;
+  overflow:visible;
+}
+
+.active{
+  display:block;
+}
+
+h1{
+  font-size:40px;
+}
+
+/* ===== BUTTONS ===== */
+
+button{
+  padding:15px 25px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  margin:10px;
+}
+
+#yes{
+  background:crimson;
+  color:white;
+}
+
+#no{
+  background:white;
+  color:black;
+  position:absolute;
+}
+
+.next{
+  background:darkred;
+  color:white;
+}
+
+/* ===== GALLERY ===== */
+
+.photos{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:30px;
+}
+
+.photos img{
+  width:180px;
+  margin:10px;
+  border-radius:15px;
+  box-shadow:0 0 15px white;
+
+  transition:transform 0.4s ease, box-shadow 0.4s ease;
+
+  position:relative;
+  z-index:1;
+  cursor:pointer;
+}
+
+.photos img:hover{
+  transform:scale(1.2);
+  z-index:10;
+  box-shadow:0 0 30px white;
+}
+
+/* ===== HEARTS ===== */
+
+.heart{
+  position:absolute;
+  font-size:22px;
+  animation:fall 5s linear;
+  pointer-events:none;
+}
+
+@keyframes fall{
+  from{top:-20px;opacity:1}
+  to{top:100vh;opacity:0}
+}
+
+/* ===== GIFT AUTO OPEN ===== */
+
+#giftBox{
+  font-size:100px;
+  margin-top:30px;
+  animation:bounce 1s infinite;
+}
+
+#giftMessage{
+  display:none;
+  margin-top:25px;
+  font-size:24px;
+  animation:fadeIn 2s ease;
+  color:gold;
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-15px);}
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:scale(0.8);}
+  to{opacity:1; transform:scale(1);}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEARTS -->
+<div id="hearts"></div>
+
+<!-- PAGE 1 -->
+<div id="page1" class="section active">
+
+  <h1>💖 Will You Be My Valentine? 💖</h1>
+
+  <button id="yes" onclick="goLetter()">Yes 💘</button>
+  <button id="no" onmouseover="moveNo()">No 💔</button>
+
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="section">
+
+  <h1>💌 My Love Letter</h1>
+
+  <p id="typing"></p>
+
+  <button class="next" onclick="goGallery()">Next ➡️</button>
+
+</div>
+
+<!-- PAGE 3 -->
+<div id="page3" class="section">
+
+  <h1>📸 Our Memories</h1>
+
+  <div class="photos">
+    <img src="images/pic1.jpeg">
+    <img src="images/pic2.jpeg">
+    <img src="images/pic3.jpeg">
+  </div>
+
+  <button class="next" onclick="goCountdown()">Next ➡️</button>
+
+</div>
+
+<!-- PAGE 4 -->
+<div id="page4" class="section">
+
+  <h1>⏳ Our Love Countdown</h1>
+
+  <h2 id="timer"></h2>
+
+  <p id="foreverText">Until Our Forever 💍❤️</p>
+
+  <!-- Auto Gift -->
+  <div id="giftArea">
+    <div id="giftBox">🎁</div>
+
+    <div id="giftMessage">
+      💖 You are my today, my tomorrow, and my forever 😘  
+      <br><br>
+      No matter where life takes us, my heart will always belong to you ❤️  
+      <br><br>
+      I Love You More Than Words Can Say 💍✨
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+/* ===== PAGE CONTROL ===== */
+
+function show(page){
+  document.querySelectorAll(".section").forEach(p=>{
+    p.classList.remove("active");
+  });
+
+  document.getElementById(page).classList.add("active");
+}
+
+/* ===== PROPOSAL ===== */
+
+function moveNo(){
+
+  const no=document.getElementById("no");
+
+  const x=Math.random()*(window.innerWidth-100);
+  const y=Math.random()*(window.innerHeight-50);
+
+  no.style.left=x+"px";
+  no.style.top=y+"px";
+}
+
+function goLetter(){
+  show("page2");
+  setTimeout(typeText,500);
+}
+
+function goGallery(){
+  show("page3");
+}
+
+function goCountdown(){
+  show("page4");
+}
+
+/* ===== TYPING ===== */
+
+const text=`
+My Love ❤️
+
+You are my happiness,
+my smile,
+my world 💕
+
+Every moment with you
+is special 😘
+
+I Love You Forever 💖
+`;
+
+let i=0;
+
+function typeText(){
+  if(i<text.length){
+    document.getElementById("typing").innerHTML+=text.charAt(i);
+    i++;
+    setTimeout(typeText,60);
+  }
+}
+
+/* ===== HEARTS ===== */
+
+function createHeart(){
+
+  const heart=document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML="❤️";
+
+  heart.style.left=Math.random()*100+"vw";
+
+  document.body.appendChild(heart);
+
+  setTimeout(()=>{
+    heart.remove();
+  },5000);
+}
+
+setInterval(createHeart,300);
+
+/* ===== COUNTDOWN AUTO OPEN ===== */
+
+const target=new Date("Feb 06, 2026 21:51:00").getTime();
+
+function updateTimer(){
+
+  const now=new Date().getTime();
+  const diff=target-now;
+
+  if(diff<=0){
+
+    document.getElementById("timer").innerHTML="00d 00h 00m 00s";
+    document.getElementById("foreverText").style.display="none";
+
+    // Auto open gift
+    document.getElementById("giftBox").innerHTML="🎉💝";
+
+    setTimeout(()=>{
+      document.getElementById("giftBox").style.display="none";
+      document.getElementById("giftMessage").style.display="block";
+    },1500);
+
+    return;
+  }
+
+  const d=Math.floor(diff/(1000*60*60*24));
+  const h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+  const m=Math.floor((diff%(1000*60*60))/(1000*60));
+  const s=Math.floor((diff%(1000*60))/1000);
+
+  document.getElementById("timer").innerHTML=
+    d+"d "+h+"h "+m+"m "+s+"s";
+}
+
+setInterval(updateTimer,1000);
+
+</script>
+
+</body>
+</html>
